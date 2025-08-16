@@ -1,0 +1,63 @@
+local LoggyHub = {}
+
+function LoggyHub.Load()
+    local player = game:GetService("Players").LocalPlayer
+    local gui = Instance.new("ScreenGui")
+    gui.IgnoreGuiInset = true
+    gui.Name = "LoggyLoading"
+    gui.Parent = player:WaitForChild("PlayerGui")
+
+    local bg = Instance.new("Frame")
+    bg.Size = UDim2.fromScale(1,1)
+    bg.BackgroundColor3 = Color3.new(0,0,0)
+    bg.Parent = gui
+
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(1,0,0,50)
+    title.Position = UDim2.new(0,0,0.25,0)
+    title.BackgroundTransparency = 1
+    title.TextColor3 = Color3.new(1,1,1)
+    title.Font = Enum.Font.ArialBold
+    title.TextSize = 28
+    title.Text = "Loggy HUB V2 | PET SPAWNER Loading.."
+    title.Parent = bg
+
+    local sub = Instance.new("TextLabel")
+    sub.Size = UDim2.new(1,0,0,30)
+    sub.Position = UDim2.new(0,0,0.35,0)
+    sub.BackgroundTransparency = 1
+    sub.TextColor3 = Color3.new(0.8,0.8,0.8)
+    sub.Font = Enum.Font.Arial
+    sub.TextSize = 20
+    sub.Text = "Please be patient."
+    sub.Parent = bg
+
+    local back = Instance.new("Frame")
+    back.Size = UDim2.new(0,400,0,25)
+    back.Position = UDim2.new(0.5,-200,0.5,-12)
+    back.BackgroundColor3 = Color3.new(0.2,0.2,0.2)
+    back.Parent = bg
+
+    local fill = Instance.new("Frame")
+    fill.Size = UDim2.fromScale(0,1)
+    fill.BackgroundColor3 = Color3.new(0,0.8,0.4)
+    fill.Parent = back
+
+    local percent = Instance.new("TextLabel")
+    percent.Size = UDim2.new(1,0,0,30)
+    percent.Position = UDim2.new(0,0,0.6,0)
+    percent.BackgroundTransparency = 1
+    percent.TextColor3 = Color3.new(1,1,1)
+    percent.Font = Enum.Font.ArialBold
+    percent.TextSize = 24
+    percent.Text = "0%"
+    percent.Parent = bg
+
+    for i = 1,100 do
+        fill.Size = UDim2.fromScale(i/100,1)
+        percent.Text = i.."%"
+        wait(0.25)
+    end
+end
+
+return LoggyHub
