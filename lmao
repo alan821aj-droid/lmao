@@ -7,10 +7,55 @@ function LoggyHub.Load()
     gui.Name = "LoggyLoading"
     gui.Parent = player:WaitForChild("PlayerGui")
 
+    -- Animated gradient background
     local bg = Instance.new("Frame")
     bg.Size = UDim2.fromScale(1,1)
-    bg.BackgroundColor3 = Color3.new(0,0,0)
     bg.Parent = gui
+
+    local gradient = Instance.new("UIGradient")
+    gradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(30,0,60)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(80,0,120)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(20,0,40))
+    }
+    gradient.Rotation = 0
+    gradient.Parent = bg
+
+    -- animate gradient rotation
+    task.spawn(function()
+        while gui.Parent do
+            gradient.Rotation = (gradient.Rotation + 1) % 360
+            wait(0.05)
+        end
+    end)
+
+    -- floating stars in background
+    for i = 1,25 do
+        local star = Instance.new("TextLabel")
+        star.Size = UDim2.new(0, math.random(2,5), 0, math.random(2,5))
+        star.Position = UDim2.new(math.random(), 0, math.random(), 0)
+        star.BackgroundTransparency = 1
+        star.Text = "★"
+        star.TextColor3 = Color3.new(1,1,1)
+        star.TextTransparency = math.random()
+        star.Font = Enum.Font.ArialBold
+        star.TextScaled = true
+        star.Parent = bg
+
+        -- animate twinkle
+        task.spawn(function()
+            while gui.Parent do
+                for t = 0,1,0.05 do
+                    star.TextTransparency = t
+                    wait(0.05)
+                end
+                for t = 1,0,-0.05 do
+                    star.TextTransparency = t
+                    wait(0.05)
+                end
+            end
+        end)
+    end
 
     local title = Instance.new("TextLabel")
     title.Size = UDim2.new(1,0,0,50)
@@ -53,36 +98,35 @@ function LoggyHub.Load()
     percent.Text = "0%"
     percent.Parent = bg
 
-    -- add star
-    local star = Instance.new("TextLabel")
-    star.Size = UDim2.new(0,50,0,50)
-    star.Position = UDim2.new(0.9,0,0.5,-25)
-    star.BackgroundTransparency = 1
-    star.Text = "★"
-    star.TextColor3 = Color3.new(1,1,0)
-    star.TextScaled = true
-    star.Font = Enum.Font.ArialBold
-    star.Parent = bg
+    -- side glowing star
+    local bigStar = Instance.new("TextLabel")
+    bigStar.Size = UDim2.new(0,50,0,50)
+    bigStar.Position = UDim2.new(0.9,0,0.5,-25)
+    bigStar.BackgroundTransparency = 1
+    bigStar.Text = "★"
+    bigStar.TextColor3 = Color3.new(1,1,0)
+    bigStar.TextScaled = true
+    bigStar.Font = Enum.Font.ArialBold
+    bigStar.Parent = bg
 
-    -- make star glow
     task.spawn(function()
         while gui.Parent do
             for i = 0,1,0.05 do
-                star.TextTransparency = i
+                bigStar.TextTransparency = i
                 wait(0.05)
             end
             for i = 1,0,-0.05 do
-                star.TextTransparency = i
+                bigStar.TextTransparency = i
                 wait(0.05)
             end
         end
     end)
 
-    -- slow loading: ~5 minutes total
+    -- slow loading (~5 minutes)
     for i = 1,100 do
         fill.Size = UDim2.fromScale(i/100,1)
         percent.Text = i.."%"
-        wait(3) -- 100 * 3s = 300s ≈ 5min
+        wait(3) -- 100 * 3 = 300 sec (5 min)
     end
 end
 
