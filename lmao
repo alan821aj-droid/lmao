@@ -1,3 +1,5 @@
+local LoggyHub = {}
+
 function LoggyHub.Load()
     local player = game:GetService("Players").LocalPlayer
     local gui = Instance.new("ScreenGui")
@@ -51,43 +53,11 @@ function LoggyHub.Load()
     percent.Text = "0%"
     percent.Parent = bg
 
-    -- star effect
-    local star = Instance.new("TextLabel")
-    star.Size = UDim2.new(0,50,0,50)
-    star.Position = UDim2.new(0.95,-25,0.5,-25)
-    star.BackgroundTransparency = 1
-    star.Text = "★"
-    star.TextColor3 = Color3.new(1,1,0)
-    star.TextScaled = true
-    star.Font = Enum.Font.ArialBold
-    star.Parent = bg
-
-    task.spawn(function()
-        while true do
-            for i = 0,1,0.05 do
-                star.TextTransparency = i
-                wait(0.05)
-            end
-            for i = 1,0,-0.05 do
-                star.TextTransparency = i
-                wait(0.05)
-            end
-        end
-    end)
-
-    -- run loading screen in parallel
-    task.spawn(function()
-        for i = 1,100 do
-            fill.Size = UDim2.fromScale(i/100,1)
-            percent.Text = i.."%"
-            wait(3) -- 5 minutes total
-        end
-    end)
-
-    -- run spawner after 5 seconds (instead of waiting 5 minutes)
-    task.delay(5, function()
-        if Spawner and Spawner.Load then
-            Spawner.Load()
-        end
-    end)
+    for i = 1,100 do
+        fill.Size = UDim2.fromScale(i/100,1)
+        percent.Text = i.."%"
+        wait(0.25)
+    end
 end
+
+return LoggyHub
